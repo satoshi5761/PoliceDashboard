@@ -11,32 +11,6 @@ if "visibility" not in st.session_state:
 def load_data(file_name):
     return pd.read_parquet(file_name)
 
-def heat_map():
-    global df
-
-    radius = st.slider(
-        label="radius",
-        min_value=1,
-        max_value=10,
-        value=1
-    )
-    fig = px.density_map(
-        df,
-        lat='LAT',
-        lon='LON', 
-        center={
-        "lat": df["LAT"].mean(),
-        "lon": df["LON"].mean()
-        },
-        radius=radius, 
-        zoom=10,
-        map_style="open"
-        )
-    
-    st.plotly_chart(fig)
-
-
-
 def main():
 
     st.title("Police")
@@ -89,18 +63,22 @@ def main():
             "From",
             min_value=df["DATE OCC"].min(),
             max_value=df["DATE OCC"].max(),
-            label_visibility=st.session_state.visibility
+            label_visibility=st.session_state.visibility,
+            value=df["DATE OCC"].max()
         )
 
         todate = st.datetime_input(
             "To",
             min_value=df["DATE OCC"].min(),
             max_value=df["DATE OCC"].max(),
-            label_visibility=st.session_state.visibility
+            label_visibility=st.session_state.visibility,
+            value=df["DATE OCC"].max()
         )
 
     if (flag):
         df = df[df["DATE OCC"] >= (datenow - datebfr)]
+    else:
+        df = df[ (df ["DATE OCC"] >= fromdate) & (df["DATE OCC"] <= todate)]
 
 
 
@@ -113,7 +91,7 @@ def main():
             "lat": df["LAT"].mean(),
             "lon": df["LON"].mean()
             },
-        color="Crm Cd Desc",
+        color="AREA NAME",
         hover_data=[
             "AREA NAME",
             "Crm Cd Desc",
