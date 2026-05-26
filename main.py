@@ -17,22 +17,19 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500&display=swap');
 
-/* Strip all default padding/margin */
 html, body { margin: 0; padding: 0; }
 [data-testid="stAppViewContainer"]  { background: #070b12 !important; }
-[data-testid="stMain"]              { background: #070b12 !important; overflow: hidden; }
+[data-testid="stMain"]              { background: #070b12 !important; }
 .block-container                    { padding: 0.6rem 1.4rem 0 !important; max-width:100% !important; }
 header[data-testid="stHeader"]      { display: none !important; }
 [data-testid="stToolbar"]           { display: none !important; }
 footer                              { display: none !important; }
 
-/* Sidebar */
 [data-testid="stSidebar"]           { background: #0a0f1c !important; border-right: 1px solid #172030; }
 [data-testid="stSidebar"] *         { color: #7a96b4 !important; font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
 [data-testid="stSidebar"] h3        { color: #c8d8ea !important; font-family: 'Rajdhani', sans-serif !important; font-size: 15px !important; letter-spacing: 2.5px; text-transform: uppercase; }
 [data-testid="stSidebar"] .stMarkdown hr { border-color: #172030; }
 
-/* Tab bar */
 [data-testid="stTabs"] > div:first-child { border-bottom: 1px solid #172030; margin-bottom: 0; }
 button[data-baseweb="tab"] {
     font-family: 'IBM Plex Mono', monospace !important;
@@ -50,10 +47,11 @@ button[data-baseweb="tab"][aria-selected="true"] {
 }
 [data-testid="stTabsContent"] { padding-top: 10px !important; }
 
-/* KPI cards */
 .kpi {
     background: #0D1726;
     border: 1px solid #1A2A3A;
+    border-radius: 6px;
+    padding: 10px 14px;
     box-shadow: 0 0 12px rgba(0,0,0,.25);
 }
 .kpi-lbl {
@@ -62,9 +60,7 @@ button[data-baseweb="tab"][aria-selected="true"] {
     text-transform: uppercase; color: #344d66;
     margin-bottom: 4px;
 }
-.kpi-val {
-    color: #E6EEF8;
-}
+.kpi-val { color: #E6EEF8; font-size: 26px; font-weight: 700; font-family: 'Rajdhani', sans-serif; line-height: 1.1; }
 .kpi-val.sm { font-size: 17px; line-height: 1.3; }
 .kpi-sub {
     font-family: 'IBM Plex Mono', monospace;
@@ -73,15 +69,6 @@ button[data-baseweb="tab"][aria-selected="true"] {
 .up   { color: #ff4455 !important; }
 .down { color: #00e676 !important; }
 
-/* Section label */
-.sec {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px; letter-spacing: 2.5px;
-    text-transform: uppercase; color: #253d55;
-    margin: 8px 0 6px;
-}
-
-/* Dash header */
 .dh-wrap {
     display: flex; align-items: center;
     justify-content: space-between;
@@ -114,13 +101,118 @@ button[data-baseweb="tab"][aria-selected="true"] {
     margin: 6px 0;
 }
 
+
+.priority-panel {
+    background: #0D1726;
+    border: 1px solid #1A2A3A;
+    border-radius: 6px;
+    padding: 12px;
+    height: 460px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    box-sizing: border-box;
+}
+
+.priority-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #253d55;
+    margin-bottom: 12px;
+}
+
+.priority-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    width: 100%;
+    min-width: 0;
+
+    margin-bottom: 8px;
+}
+
+.priority-rank {
+    flex: 0 0 18px;
+
+    text-align: right;
+
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: #253d55;
+}
+
+.priority-name {
+    flex: 0 0 70px;
+
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: #aac4de;
+}
+
+.priority-bar-wrap {
+    flex: 1 1 auto;
+    min-width: 30px;
+
+    height: 6px;
+
+    background: #08111d;
+    border-radius: 3px;
+
+    overflow: hidden;
+}
+
+.priority-bar {
+    height: 100%;
+    border-radius: 3px;
+}
+
+.priority-count {
+    flex: 0 0 28px;
+
+    text-align: right;
+
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    color: #344d66;
+}
+
+.priority-badge {
+    flex: 0 0 auto;
+
+    padding: 1px 4px;
+
+    border-radius: 3px;
+
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 7px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.priority-homicide {
+    flex: 0 0 auto;
+
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px;
+
+    white-space: nowrap;
+}
+            
+
 [data-baseweb="tag"] {
     background: rgba(77,163,255,.15) !important;
     border: 1px solid rgba(77,163,255,.35) !important;
     color: #A8D0FF !important;
 }
-
-/* Plotly containers */
 div[data-testid="stPlotlyChart"] { border-radius: 7px; overflow: hidden; }
 </style>
 """, unsafe_allow_html=True)
@@ -151,7 +243,6 @@ LAPD_STATIONS = pd.DataFrame([
     {"Division": "Topanga",     "LAT": 34.1831, "LON": -118.6083},
 ])
 
-
 CRIME_COLORS = {
     "Homicide":      "#FF5A5F",
     "Sex Crime":     "#E056FD",
@@ -165,19 +256,12 @@ CRIME_COLORS = {
     "Other":         "#708090",
 }
 
-# BG    = "#0a0f1c"
-# BG2   = "#0e1521"
-# GRID  = "#172030"
-# TEXT  = "#7a96b4"
-# ACCENT= "#3d9eff"
-# Core UI
-BG     = "#071018"      # deep navy
-BG2    = "#0D1726"      # card background
-GRID   = "#1A2A3A"      # borders/grid
-TEXT   = "#A8B8CC"      # normal text
-TEXT2  = "#E6EEF8"      # important text
-ACCENT = "#4DA3FF"      # primary blue
-
+BG     = "#071018"
+BG2    = "#0D1726"
+GRID   = "#1A2A3A"
+TEXT   = "#A8B8CC"
+TEXT2  = "#E6EEF8"
+ACCENT = "#4DA3FF"
 SUCCESS = "#2ECC71"
 WARNING = "#F5A524"
 DANGER  = "#FF5A5F"
@@ -210,6 +294,13 @@ def categorize(desc):
     if any(k in d for k in ["VANDAL","GRAFFITI","ARSON"]): return "Vandalism"
     if any(k in d for k in ["DRUG","NARCOTIC","MARIJUANA","COCAINE"]): return "Narcotics"
     return "Other"
+
+def severity_color(rank, total):
+    pct = rank / max(total, 1)
+    if pct <= 0.20: return "#FF5A5F", "#3a0a0a"   # critical: red
+    if pct <= 0.45: return "#F5A524", "#3a2200"   # high: amber
+    if pct <= 0.70: return "#3d9eff", "#0a1e3a"   # moderate: blue
+    return "#2e4a66", "#0a1220"                    # low: muted
 
 @st.cache_data
 def load(fname):
@@ -294,19 +385,26 @@ delta      = N - N_prev
 dpct       = (delta / N_prev * 100) if N_prev > 0 else 0
 dsym       = "▲" if delta >= 0 else "▼"
 dcls       = "up" if delta >= 0 else "down"
-top_cat    = df["CRIME CATEGORY"].value_counts().index[0]   if N else "—"
-top_cat_n  = df["CRIME CATEGORY"].value_counts().iloc[0]    if N else 0
 top_area   = df["AREA NAME"].value_counts().index[0]        if N else "—"
 top_area_n = df["AREA NAME"].value_counts().iloc[0]         if N else 0
 armed_pct  = df["ARMED"].mean() * 100                       if N else 0
-avg_age    = df[df["Vict Age"] > 0]["Vict Age"].mean()       if N else 0
 homicides  = int((df["CRIME CATEGORY"] == "Homicide").sum())
 daily_avg  = N / pdays
 
+# Priority areas data
+area_stats = (df.groupby("AREA NAME")
+                .agg(Total=("CRIME CATEGORY","count"),
+                     Homicides=("CRIME CATEGORY", lambda x: (x=="Homicide").sum()),
+                     Armed=("ARMED","sum"))
+                .reset_index()
+                .sort_values("Total", ascending=False)
+                .reset_index(drop=True))
+area_max = area_stats["Total"].max() if len(area_stats) > 0 else 1
+
 def kpi(label, value, sub, accent="#3d9eff", extra_cls=""):
-    return f"""<div class="kpi" style="--accent:{accent}">
+    return f"""<div class="kpi">
         <div class="kpi-lbl">{label}</div>
-        <div class="kpi-val {extra_cls}">{value}</div>
+        <div class="kpi-val {extra_cls}" style="color:{accent}">{value}</div>
         <div class="kpi-sub">{sub}</div>
     </div>"""
 
@@ -339,93 +437,122 @@ tab1, tab2, tab3 = st.tabs([
 # ║  TAB 1 — OVERVIEW                                                           ║
 # ╚══════════════════════════════════════════════════════════════════════════════╝
 with tab1:
-    # ── KPI strip ────────────────────────────────────────────────────────────
-    k1,k2,k3,k4,k5,k6 = st.columns(6)
-    k1.markdown(kpi("Total Incidents", f"{N:,}",
-        f'<span class="{dcls}">{dsym} {abs(delta):,} ({abs(dpct):.1f}%)</span> vs prev',
-        "#ff3d3d"), unsafe_allow_html=True)
-    k2.markdown(kpi("Top Crime Type", top_cat, f"{top_cat_n:,} incidents",
-        "#ff9100", "sm"), unsafe_allow_html=True)
-    k3.markdown(kpi("Hotspot Division", top_area, f"{top_area_n:,} incidents",
-        "#ffd700", "sm"), unsafe_allow_html=True)
-    k4.markdown(kpi("Armed Incidents", f"{armed_pct:.1f}%",
-        f"{int(df['ARMED'].sum()):,} with weapon", "#bf5fff"), unsafe_allow_html=True)
-    k5.markdown(kpi("Avg Victim Age", f"{avg_age:.0f}",
-        "years old", "#3d9eff"), unsafe_allow_html=True)
-    k6.markdown(kpi("Homicides", str(homicides),
-        f"{daily_avg:.1f} incidents/day avg", "#ff3d3d"), unsafe_allow_html=True)
+    # ── 4 KPI strip ──────────────────────────────────────────────────────────
+    k1, k2, k3, k4 = st.columns(4)
+
+    k1.markdown(kpi(
+        "Total Incidents", f"{N:,}",
+        f'<span class="{dcls}">{dsym} {abs(delta):,} ({abs(dpct):.1f}%)</span> vs prev period',
+        "#ff3d3d"
+    ), unsafe_allow_html=True)
+
+    k2.markdown(kpi(
+        "Homicides", str(homicides),
+        f"{(homicides/N*100):.1f}% of total incidents" if N else "no incidents",
+        "#ff3d3d" if homicides >= 5 else "#ff7070"
+    ), unsafe_allow_html=True)
+
+    k3.markdown(kpi(
+        "Armed Incidents", f"{armed_pct:.1f}%",
+        f"{int(df['ARMED'].sum()):,} incidents with weapon",
+        "#bf5fff"
+    ), unsafe_allow_html=True)
+
+    k4.markdown(kpi(
+        "Hotspot Division", top_area,
+        f"{top_area_n:,} incidents · {(top_area_n/N*100):.1f}% of total" if N else "—",
+        "#f5a524", "sm"
+    ), unsafe_allow_html=True)
 
     st.markdown("<div style='margin-top:8px'></div>", unsafe_allow_html=True)
 
-    # ── Map + Side charts ─────────────────────────────────────────────────────
-    mapcol, sidecol = st.columns([6, 4])
 
-    with mapcol:
-        color_col = "CRIME CATEGORY" if color_by == "Crime Type" else "AREA NAME"
-        cmap      = CRIME_COLORS     if color_by == "Crime Type"  else {}
-        map_df    = df.sample(min(N, 10_000), random_state=42) if N > 10_000 else df
+    # ── Main Intelligence Map ────────────────────────────────────────────────
+    st.markdown("""
+    <div style="
+    font-family:IBM Plex Mono;
+    font-size:9px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:#253d55;
+    margin-bottom:6px">
+    Geospatial Incident Intelligence
+    </div>
+    """, unsafe_allow_html=True)
 
-        fig_map = px.scatter_map(
-            map_df, lat="LAT", lon="LON",
-            color=color_col,
-            color_discrete_map=cmap if color_by == "Crime Type" else None,
-            hover_data={"AREA NAME":True,"CRIME CATEGORY":True,
-                        "Crm Cd Desc":True,"Vict Age":True,
-                        "Weapon Desc":True,"LAT":False,"LON":False},
-            map_style="carto-darkmatter",
-            zoom=9, center={"lat":34.0522,"lon":-118.2437},
-            opacity=0.82, size_max=5,
-        )
-        fig_map.update_traces(marker=dict(size=5))
+    color_col = "CRIME CATEGORY" if color_by == "Crime Type" else "AREA NAME"
+    cmap      = CRIME_COLORS if color_by == "Crime Type" else {}
 
-        if show_sta:
-            fig_map.add_trace(go.Scattermap(
-                lat=LAPD_STATIONS["LAT"], lon=LAPD_STATIONS["LON"],
+    map_df = df.sample(min(N, 10000), random_state=42) if N > 10000 else df
+
+    fig_map = px.scatter_map(
+        map_df,
+        lat="LAT",
+        lon="LON",
+        color=color_col,
+        color_discrete_map=cmap if color_by == "Crime Type" else None,
+        hover_data={
+            "AREA NAME": True,
+            "CRIME CATEGORY": True,
+            "Crm Cd Desc": True,
+            "Vict Age": True,
+            "Weapon Desc": True,
+            "LAT": False,
+            "LON": False
+        },
+        map_style="carto-darkmatter",
+        zoom=9,
+        center={"lat": 34.0522, "lon": -118.2437},
+        opacity=0.82
+    )
+
+    fig_map.update_traces(
+        marker=dict(size=5)
+    )
+
+    if show_sta:
+        fig_map.add_trace(
+            go.Scattermap(
+                lat=LAPD_STATIONS["LAT"],
+                lon=LAPD_STATIONS["LON"],
                 mode="markers+text",
-                marker=dict(size=14, color="#00e5ff", opacity=0.95),
+                marker=dict(
+                    size=14,
+                    color="#00e5ff",
+                    opacity=0.95
+                ),
                 text=LAPD_STATIONS["Division"],
                 textposition="top center",
-                textfont=dict(color="#00e5ff", size=8, family="IBM Plex Mono"),
+                textfont=dict(
+                    color="#00e5ff",
+                    size=8,
+                    family="IBM Plex Mono"
+                ),
                 name="Police Station",
                 hovertemplate="<b>%{text} HQ</b><extra></extra>",
-            ))
-
-        fig_map.update_layout(
-            height=460, margin=dict(l=0,r=0,t=0,b=0),
-            paper_bgcolor=BG,
-            legend=dict(bgcolor=BG2, bordercolor=GRID, borderwidth=1,
-                        font=dict(color=TEXT, size=9),
-                        orientation="v", x=0.01, y=0.99,
-                        xanchor="left", yanchor="top"),
+            )
         )
-        st.plotly_chart(fig_map, use_container_width=True)
 
-    with sidecol:
-        # Trend line
-        trend = df.groupby("DATE ONLY").size().reset_index(name="Count")
-        trend["Date"] = pd.to_datetime(trend["DATE ONLY"])
-        fig_tr = go.Figure(go.Scatter(
-            x=trend["Date"], y=trend["Count"],
-            fill="tozeroy", fillcolor="rgba(61,158,255,0.07)",
-            line=dict(color=ACCENT, width=1.5),
-            name="Incidents",
-        ))
-        chart(fig_tr, h=220)
-        fig_tr.update_layout(title="Daily Trend", showlegend=False)
-        st.plotly_chart(fig_tr, use_container_width=True)
+    fig_map.update_layout(
+        height=780,
+        margin=dict(l=0, r=0, t=0, b=0),
+        paper_bgcolor=BG,
+        legend=dict(
+            bgcolor=BG2,
+            bordercolor=GRID,
+            borderwidth=1,
+            font=dict(color=TEXT, size=9),
+            orientation="v",
+            x=0.01,
+            y=0.99,
+            xanchor="left",
+            yanchor="top",
+        ),
+    )
 
-        # Category donut
-        cat_cnt = df["CRIME CATEGORY"].value_counts().reset_index()
-        cat_cnt.columns = ["Category","Count"]
-        fig_don = px.pie(cat_cnt, names="Category", values="Count",
-                         color="Category", color_discrete_map=CRIME_COLORS,
-                         hole=0.60)
-        chart(fig_don, h=220)
-        fig_don.update_layout(title="Category Breakdown", showlegend=True)
-        fig_don.update_layout(legend=dict(bgcolor=BG, bordercolor=GRID, borderwidth=1,
-                                          font=dict(color=TEXT, size=8)))
-        fig_don.update_traces(textinfo="percent", textfont_size=9)
-        st.plotly_chart(fig_don, use_container_width=True)
+    st.plotly_chart(fig_map, use_container_width=True)
+
+
 
 # ╔══════════════════════════════════════════════════════════════════════════════╗
 # ║  TAB 2 — ANALYTICS                                                          ║
@@ -434,15 +561,15 @@ with tab2:
     r1a, r1b = st.columns([3, 2])
 
     with r1a:
-        # Heatmap hour × day
         DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
         heat = (df.groupby(["DAY OF WEEK","HOUR"]).size()
                   .reset_index(name="Count")
                   .pivot(index="DAY OF WEEK", columns="HOUR", values="Count")
                   .fillna(0)
                   .reindex([d for d in DAYS if d in df["DAY OF WEEK"].values]))
-        fig_h = px.imshow(heat, 
-                         color_continuous_scale=["#0D1726","#1F4E79","#4DA3FF","#F5A524","#FF5A5F"] ,aspect="auto", title="Crime Frequency: Hour × Day")
+        fig_h = px.imshow(heat,
+                         color_continuous_scale=["#0D1726","#1F4E79","#4DA3FF","#F5A524","#FF5A5F"],
+                         aspect="auto", title="Crime Frequency: Hour × Day")
         chart(fig_h, h=270)
         fig_h.update_layout(coloraxis_showscale=False)
         fig_h.update_xaxes(title="Hour of Day (24h)", tickmode="linear", dtick=2)
@@ -450,7 +577,6 @@ with tab2:
         st.plotly_chart(fig_h, use_container_width=True)
 
     with r1b:
-        # Victim sex pie
         sx = df["Vict Sex Clean"].value_counts().reset_index()
         sx.columns = ["Sex","Count"]
         fig_sx = px.pie(sx, names="Sex", values="Count", hole=0.55,
@@ -474,7 +600,6 @@ with tab2:
         st.plotly_chart(fig_c, use_container_width=True)
 
     with r2b:
-        # Weapons
         wdf = df[df["ARMED"]]
         tw  = wdf["Weapon Desc"].value_counts().head(8).reset_index()
         tw.columns = ["Weapon","Count"]
@@ -486,7 +611,6 @@ with tab2:
         st.plotly_chart(fig_w, use_container_width=True)
 
     with r2c:
-        # Age distribution
         ag = (df["Age Group"].value_counts().sort_index()
                              .dropna().reset_index())
         ag.columns = ["Age Group","Count"]
@@ -497,6 +621,7 @@ with tab2:
         fig_ag.update_xaxes(gridcolor="rgba(0,0,0,0)")
         st.plotly_chart(fig_ag, use_container_width=True)
 
+
 # ╔══════════════════════════════════════════════════════════════════════════════╗
 # ║  TAB 3 — DIVISION INTEL                                                     ║
 # ╚══════════════════════════════════════════════════════════════════════════════╝
@@ -504,7 +629,6 @@ with tab3:
     t3a, t3b = st.columns([3, 2])
 
     with t3a:
-        # Division × Category matrix
         pivot = (df.groupby(["AREA NAME","CRIME CATEGORY"]).size()
                    .reset_index(name="Count")
                    .pivot(index="AREA NAME", columns="CRIME CATEGORY", values="Count")
@@ -520,7 +644,6 @@ with tab3:
         st.plotly_chart(fig_mx, use_container_width=True)
 
     with t3b:
-        # Division stats table
         div_st = (df.groupby("AREA NAME")
                     .agg(Total=("CRIME CATEGORY","count"),
                          Homicides=("CRIME CATEGORY", lambda x: (x=="Homicide").sum()),
@@ -532,7 +655,7 @@ with tab3:
         div_st["Armed%"] = (div_st["Armed"]/div_st["Total"]*100).round(1).astype(str)+"%"
         div_st = div_st.drop(columns=["Armed"])
 
-        st.markdown("<div class='sec'>Division Breakdown</div>", unsafe_allow_html=True)
+        st.markdown("<div style='font-family:IBM Plex Mono;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#253d55;margin-bottom:6px'>Division Breakdown</div>", unsafe_allow_html=True)
         st.dataframe(div_st, use_container_width=True, height=460,
             column_config={
                 "Division":  st.column_config.TextColumn("Division"),
@@ -542,8 +665,7 @@ with tab3:
                 "Top":       st.column_config.TextColumn("Top Crime"),
             })
 
-    # Incident log — compact
-    st.markdown("<div class='sec' style='margin-top:10px'>Recent Incident Log</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-family:IBM Plex Mono;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#253d55;margin:10px 0 6px'>Recent Incident Log</div>", unsafe_allow_html=True)
     log_cols = [c for c in ["DATE OCC","AREA NAME","CRIME CATEGORY","Crm Cd Desc",
                              "Vict Age","Vict Sex Clean","Weapon Desc","Premis Desc"] if c in df.columns]
     st.dataframe(
