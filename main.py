@@ -60,11 +60,11 @@ button[data-baseweb="tab"][aria-selected="true"] {
     text-transform: uppercase; color: #344d66;
     margin-bottom: 4px;
 }
-.kpi-val { color: #E6EEF8; font-size: 26px; font-weight: 700; font-family: 'Rajdhani', sans-serif; line-height: 1.1; }
-.kpi-val.sm { font-size: 17px; line-height: 1.3; }
+.kpi-val { color: #E6EEF8; font-size: 55px; font-weight: 700; font-family: 'Rajdhani', sans-serif; line-height: 1.1; }
+.kpi-val.sm { font-size: 47px; line-height: 1.3; }
 .kpi-sub {
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 9px; color: #2e4a66; margin-top: 3px;
+    font-size: 12px; color: #2e4a66; margin-top: 3px;
 }
 .up   { color: #ff4455 !important; }
 .down { color: #00e676 !important; }
