@@ -445,10 +445,13 @@ with tab1:
     ), unsafe_allow_html=True)
 
 
+    # Armed incident risk color
+    armed_color = "#FF5A5F" if armed_pct > 70 else "#D98083"
     k3.markdown(kpi(
-        "Armed Incidents", f"{armed_pct:.1f}%",
-        f"{int(df['ARMED'].sum()):,} incidents with weapon",
-        "#bf5fff"
+    "Armed Incidents",
+    f"{armed_pct:.1f}%",
+    f"{int(df['ARMED'].sum()):,} incidents with weapon",
+    armed_color
     ), unsafe_allow_html=True)
 
     k4.markdown(kpi(
