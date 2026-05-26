@@ -52,11 +52,9 @@ button[data-baseweb="tab"][aria-selected="true"] {
 
 /* KPI cards */
 .kpi {
-    background: #0e1521;
-    border: 1px solid #172030;
-    border-top: 2px solid var(--accent, #3d9eff);
-    border-radius: 7px;
-    padding: 10px 14px 8px;
+    background: #0D1726;
+    border: 1px solid #1A2A3A;
+    box-shadow: 0 0 12px rgba(0,0,0,.25);
 }
 .kpi-lbl {
     font-family: 'IBM Plex Mono', monospace;
@@ -65,9 +63,7 @@ button[data-baseweb="tab"][aria-selected="true"] {
     margin-bottom: 4px;
 }
 .kpi-val {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 30px; font-weight: 700;
-    color: #ddeeff; line-height: 1;
+    color: #E6EEF8;
 }
 .kpi-val.sm { font-size: 17px; line-height: 1.3; }
 .kpi-sub {
@@ -118,10 +114,17 @@ button[data-baseweb="tab"][aria-selected="true"] {
     margin: 6px 0;
 }
 
+[data-baseweb="tag"] {
+    background: rgba(77,163,255,.15) !important;
+    border: 1px solid rgba(77,163,255,.35) !important;
+    color: #A8D0FF !important;
+}
+
 /* Plotly containers */
 div[data-testid="stPlotlyChart"] { border-radius: 7px; overflow: hidden; }
 </style>
 """, unsafe_allow_html=True)
+
 
 # ── CONSTANTS ─────────────────────────────────────────────────────────────────
 LAPD_STATIONS = pd.DataFrame([
@@ -148,24 +151,36 @@ LAPD_STATIONS = pd.DataFrame([
     {"Division": "Topanga",     "LAT": 34.1831, "LON": -118.6083},
 ])
 
+
 CRIME_COLORS = {
-    "Homicide":     "#ff3d3d",
-    "Sex Crime":    "#ff8c00",
-    "Robbery":      "#ffd700",
-    "Assault":      "#ff6b9d",
-    "Burglary":     "#00bfff",
-    "Theft":        "#00e5ff",
-    "Vehicle Crime":"#7fff00",
-    "Vandalism":    "#bf5fff",
-    "Narcotics":    "#ff9e3d",
-    "Other":        "#3d5a7a",
+    "Homicide":      "#FF5A5F",
+    "Sex Crime":     "#E056FD",
+    "Robbery":       "#F5A524",
+    "Assault":       "#FF7A45",
+    "Burglary":      "#4DA3FF",
+    "Theft":         "#00C2FF",
+    "Vehicle Crime": "#52C41A",
+    "Vandalism":     "#7B61FF",
+    "Narcotics":     "#13C2C2",
+    "Other":         "#708090",
 }
 
-BG    = "#0a0f1c"
-BG2   = "#0e1521"
-GRID  = "#172030"
-TEXT  = "#7a96b4"
-ACCENT= "#3d9eff"
+# BG    = "#0a0f1c"
+# BG2   = "#0e1521"
+# GRID  = "#172030"
+# TEXT  = "#7a96b4"
+# ACCENT= "#3d9eff"
+# Core UI
+BG     = "#071018"      # deep navy
+BG2    = "#0D1726"      # card background
+GRID   = "#1A2A3A"      # borders/grid
+TEXT   = "#A8B8CC"      # normal text
+TEXT2  = "#E6EEF8"      # important text
+ACCENT = "#4DA3FF"      # primary blue
+
+SUCCESS = "#2ECC71"
+WARNING = "#F5A524"
+DANGER  = "#FF5A5F"
 
 BASE_LAYOUT = dict(
     paper_bgcolor=BG2, plot_bgcolor=BG2,
@@ -426,8 +441,8 @@ with tab2:
                   .pivot(index="DAY OF WEEK", columns="HOUR", values="Count")
                   .fillna(0)
                   .reindex([d for d in DAYS if d in df["DAY OF WEEK"].values]))
-        fig_h = px.imshow(heat, color_continuous_scale=[BG,"#1a2a3a","#ff3d3d"],
-                          aspect="auto", title="Crime Frequency: Hour × Day")
+        fig_h = px.imshow(heat, 
+                         color_continuous_scale=["#0D1726","#1F4E79","#4DA3FF","#F5A524","#FF5A5F"] ,aspect="auto", title="Crime Frequency: Hour × Day")
         chart(fig_h, h=270)
         fig_h.update_layout(coloraxis_showscale=False)
         fig_h.update_xaxes(title="Hour of Day (24h)", tickmode="linear", dtick=2)
