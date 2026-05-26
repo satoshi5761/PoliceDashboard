@@ -244,7 +244,6 @@ LAPD_STATIONS = pd.DataFrame([
 ])
 
 CRIME_COLORS = {
-    "Homicide":      "#FF5A5F",
     "Sex Crime":     "#E056FD",
     "Robbery":       "#F5A524",
     "Assault":       "#FF7A45",
@@ -284,7 +283,7 @@ def chart(fig, h=240):
 # ── HELPERS ───────────────────────────────────────────────────────────────────
 def categorize(desc):
     d = str(desc).upper()
-    if any(k in d for k in ["HOMICIDE","MURDER","MANSLAUGHTER"]): return "Homicide"
+    # if any(k in d for k in ["HOMICIDE","MURDER","MANSLAUGHTER"]): return "Homicide"
     if any(k in d for k in ["RAPE","SEX","LEWD","INDECENT","SODOMY","CHILD ABUSE"]): return "Sex Crime"
     if any(k in d for k in ["ROBBERY","PURSE","CARJACK"]): return "Robbery"
     if any(k in d for k in ["ASSAULT","BATTERY","BRANDISH","SHOTS"]): return "Assault"
@@ -438,7 +437,7 @@ tab1, tab2, tab3 = st.tabs([
 # ╚══════════════════════════════════════════════════════════════════════════════╝
 with tab1:
     # ── 4 KPI strip ──────────────────────────────────────────────────────────
-    k1, k2, k3, k4 = st.columns(4)
+    k1, k3, k4 = st.columns(3)
 
     k1.markdown(kpi(
         "Total Incidents", f"{N:,}",
@@ -446,11 +445,6 @@ with tab1:
         "#ff3d3d"
     ), unsafe_allow_html=True)
 
-    k2.markdown(kpi(
-        "Homicides", str(homicides),
-        f"{(homicides/N*100):.1f}% of total incidents" if N else "no incidents",
-        "#ff3d3d" if homicides >= 5 else "#ff7070"
-    ), unsafe_allow_html=True)
 
     k3.markdown(kpi(
         "Armed Incidents", f"{armed_pct:.1f}%",
