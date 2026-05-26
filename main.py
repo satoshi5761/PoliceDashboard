@@ -426,10 +426,9 @@ if homicides >= 5:
     st.markdown(f'<div class="alert">⚠ ALERT — {homicides} homicide(s) in selected period. Command review recommended.</div>', unsafe_allow_html=True)
 
 # ── TABS ─────────────────────────────────────────────────────────────────────
-tab1, tab2, tab3 = st.tabs([
+tab1, tab2 = st.tabs([
     "◈  OVERVIEW",
     "◈  ANALYTICS",
-    "◈  DIVISION INTEL",
 ])
 
 # ╔══════════════════════════════════════════════════════════════════════════════╗
@@ -550,130 +549,65 @@ with tab1:
 
 # ╔══════════════════════════════════════════════════════════════════════════════╗
 # ║  TAB 2 — ANALYTICS                                                          ║
-# ╚══════════════════════════════════════════════════════════════════════════════╝
+
 with tab2:
-    r1a, r1b = st.columns([3, 2])
 
-    with r1a:
-        DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
-        heat = (df.groupby(["DAY OF WEEK","HOUR"]).size()
-                  .reset_index(name="Count")
-                  .pivot(index="DAY OF WEEK", columns="HOUR", values="Count")
-                  .fillna(0)
-                  .reindex([d for d in DAYS if d in df["DAY OF WEEK"].values]))
-        fig_h = px.imshow(heat,
-                         color_continuous_scale=["#0D1726","#1F4E79","#4DA3FF","#F5A524","#FF5A5F"],
-                         aspect="auto", title="Crime Frequency: Hour × Day")
-        chart(fig_h, h=270)
-        fig_h.update_layout(coloraxis_showscale=False)
-        fig_h.update_xaxes(title="Hour of Day (24h)", tickmode="linear", dtick=2)
-        fig_h.update_yaxes(title="")
-        st.plotly_chart(fig_h, use_container_width=True)
+    st.markdown("""
+    <div style="
+        font-family:IBM Plex Mono;
+        font-size:9px;
+        letter-spacing:2px;
+        text-transform:uppercase;
+        color:#253d55;
+        margin-bottom:8px">
+        Crime Trend Analysis
+    </div>
+    """, unsafe_allow_html=True)
 
-    with r1b:
-        sx = df["Vict Sex Clean"].value_counts().reset_index()
-        sx.columns = ["Sex","Count"]
-        fig_sx = px.pie(sx, names="Sex", values="Count", hole=0.55,
-                        color_discrete_sequence=[ACCENT,"#ff6b9d","#3d5a7a"],
-                        title="Victim Sex")
-        chart(fig_sx, h=270)
-        fig_sx.update_traces(textinfo="percent", textfont_size=9)
-        fig_sx.update_layout(showlegend=True)
-        st.plotly_chart(fig_sx, use_container_width=True)
-
-    r2a, r2b, r2c = st.columns(3)
-
-    with r2a:
-        top15 = df["Crm Cd Desc"].value_counts().head(10).reset_index()
-        top15.columns = ["Crime","Count"]
-        top15 = top15.sort_values("Count")
-        fig_c = px.bar(top15, x="Count", y="Crime", orientation="h",
-                       title="Top 10 Crime Types", color_discrete_sequence=[ACCENT])
-        chart(fig_c, h=310)
-        fig_c.update_yaxes(gridcolor="rgba(0,0,0,0)", tickfont=dict(size=8))
-        st.plotly_chart(fig_c, use_container_width=True)
-
-    with r2b:
-        wdf = df[df["ARMED"]]
-        tw  = wdf["Weapon Desc"].value_counts().head(8).reset_index()
-        tw.columns = ["Weapon","Count"]
-        tw = tw.sort_values("Count")
-        fig_w = px.bar(tw, x="Count", y="Weapon", orientation="h",
-                       title="Top Weapons Used", color_discrete_sequence=["#ff3d3d"])
-        chart(fig_w, h=310)
-        fig_w.update_yaxes(gridcolor="rgba(0,0,0,0)", tickfont=dict(size=8))
-        st.plotly_chart(fig_w, use_container_width=True)
-
-    with r2c:
-        ag = (df["Age Group"].value_counts().sort_index()
-                             .dropna().reset_index())
-        ag.columns = ["Age Group","Count"]
-        fig_ag = px.bar(ag, x="Age Group", y="Count",
-                        title="Victim Age Groups",
-                        color_discrete_sequence=["#f0883e"])
-        chart(fig_ag, h=310)
-        fig_ag.update_xaxes(gridcolor="rgba(0,0,0,0)")
-        st.plotly_chart(fig_ag, use_container_width=True)
-
-
-# ╔══════════════════════════════════════════════════════════════════════════════╗
-# ║  TAB 3 — DIVISION INTEL                                                     ║
-# ╚══════════════════════════════════════════════════════════════════════════════╝
-with tab3:
-    t3a, t3b = st.columns([3, 2])
-
-    with t3a:
-        pivot = (df.groupby(["AREA NAME","CRIME CATEGORY"]).size()
-                   .reset_index(name="Count")
-                   .pivot(index="AREA NAME", columns="CRIME CATEGORY", values="Count")
-                   .fillna(0))
-        fig_mx = px.imshow(pivot, text_auto=True,
-                           color_continuous_scale=[BG,"#1a2a3a","#ff3d3d"],
-                           aspect="auto", title="Division × Crime Category Matrix")
-        chart(fig_mx, h=460)
-        fig_mx.update_layout(coloraxis_showscale=False)
-        fig_mx.update_traces(textfont=dict(size=8))
-        fig_mx.update_xaxes(tickfont=dict(size=9))
-        fig_mx.update_yaxes(tickfont=dict(size=9))
-        st.plotly_chart(fig_mx, use_container_width=True)
-
-    with t3b:
-        div_st = (df.groupby("AREA NAME")
-                    .agg(Total=("CRIME CATEGORY","count"),
-                         Homicides=("CRIME CATEGORY", lambda x: (x=="Homicide").sum()),
-                         Armed=("ARMED","sum"),
-                         Top=("CRIME CATEGORY", lambda x: x.value_counts().index[0] if len(x)>0 else "—"))
-                    .reset_index()
-                    .rename(columns={"AREA NAME":"Division"})
-                    .sort_values("Total", ascending=False))
-        div_st["Armed%"] = (div_st["Armed"]/div_st["Total"]*100).round(1).astype(str)+"%"
-        div_st = div_st.drop(columns=["Armed"])
-
-        st.markdown("<div style='font-family:IBM Plex Mono;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#253d55;margin-bottom:6px'>Division Breakdown</div>", unsafe_allow_html=True)
-        st.dataframe(div_st, use_container_width=True, height=460,
-            column_config={
-                "Division":  st.column_config.TextColumn("Division"),
-                "Total":     st.column_config.NumberColumn("Total", format="%d"),
-                "Homicides": st.column_config.NumberColumn("Homicide", format="%d"),
-                "Armed%":    st.column_config.TextColumn("Armed%"),
-                "Top":       st.column_config.TextColumn("Top Crime"),
-            })
-
-    st.markdown("<div style='font-family:IBM Plex Mono;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:#253d55;margin:10px 0 6px'>Recent Incident Log</div>", unsafe_allow_html=True)
-    log_cols = [c for c in ["DATE OCC","AREA NAME","CRIME CATEGORY","Crm Cd Desc",
-                             "Vict Age","Vict Sex Clean","Weapon Desc","Premis Desc"] if c in df.columns]
-    st.dataframe(
-        df[log_cols].sort_values("DATE OCC", ascending=False).head(300),
-        use_container_width=True, height=220,
-        column_config={
-            "DATE OCC":       st.column_config.DatetimeColumn("Date", format="MMM DD YY"),
-            "AREA NAME":      st.column_config.TextColumn("Division"),
-            "CRIME CATEGORY": st.column_config.TextColumn("Category"),
-            "Crm Cd Desc":    st.column_config.TextColumn("Crime"),
-            "Vict Age":       st.column_config.NumberColumn("Age"),
-            "Vict Sex Clean": st.column_config.TextColumn("Sex"),
-            "Weapon Desc":    st.column_config.TextColumn("Weapon"),
-            "Premis Desc":    st.column_config.TextColumn("Location"),
-        }
+    # Daily incident counts
+    trend = (
+        df.groupby(df["DATE OCC"].dt.date)
+          .size()
+          .reset_index(name="Incidents")
     )
-    st.caption(f"Showing 300 most recent · {N:,} total in selection")
+
+    trend.columns = ["Date", "Incidents"]
+
+    fig_trend = go.Figure()
+
+    fig_trend.add_trace(
+        go.Scatter(
+            x=trend["Date"],
+            y=trend["Incidents"],
+            mode="lines",
+            line=dict(
+                color=ACCENT,
+                width=3
+            ),
+            hovertemplate=
+                "<b>%{x}</b><br>" +
+                "Incidents: %{y}<extra></extra>"
+        )
+    )
+
+    chart(fig_trend, h=550)
+
+    fig_trend.update_layout(
+        title="Crime Incidents Over Time",
+        showlegend=False,
+        hovermode="x unified",
+        margin=dict(l=20, r=20, t=50, b=20)
+    )
+
+    fig_trend.update_xaxes(
+        title="Date"
+    )
+
+    fig_trend.update_yaxes(
+        title="Number of Incidents"
+    )
+
+    st.plotly_chart(
+        fig_trend,
+        use_container_width=True
+    )
