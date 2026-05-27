@@ -554,63 +554,50 @@ with tab1:
 # ║  TAB 2 — ANALYTICS                                                          ║
 
 with tab2:
-
     st.markdown("""
-    <div style="
-        font-family:IBM Plex Mono;
-        font-size:9px;
-        letter-spacing:2px;
-        text-transform:uppercase;
-        color:#253d55;
-        margin-bottom:8px">
+    <div style="font-family:IBM Plex Mono; font-size:9px; letter-spacing:2px; 
+    text-transform:uppercase; color:#253d55; margin-bottom:8px">
         Crime Trend Analysis
     </div>
     """, unsafe_allow_html=True)
 
-    # Daily incident counts
-    trend = (
-        df.groupby(df["DATE OCC"].dt.date)
-          .size()
-          .reset_index(name="Incidents")
-    )
-
+    # Logika pembuatan data tren
+    trend = df.groupby(df["DATE OCC"].dt.date).size().reset_index(name="Incidents")
     trend.columns = ["Date", "Incidents"]
 
+    # Membuat objek fig_trend
     fig_trend = go.Figure()
+    fig_trend.add_trace(go.Scatter(
+        x=trend["Date"], y=trend["Incidents"], mode="lines",
+        line=dict(color=ACCENT, width=3),
+        hovertemplate="<b>%{x}</b><br>Incidents: %{y}<extra></extra>"
+    ))
 
-    fig_trend.add_trace(
-        go.Scatter(
-            x=trend["Date"],
-            y=trend["Incidents"],
-            mode="lines",
-            line=dict(
-                color=ACCENT,
-                width=3
-            ),
-            hovertemplate=
-                "<b>%{x}</b><br>" +
-                "Incidents: %{y}<extra></extra>"
+    chart(fig_trend, h=400) 
+    st.plotly_chart(fig_trend, use_container_width=True)
+
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("<div class='priority-title'>INCIDENTS BY CATEGORY</div>", unsafe_allow_html=True)
+        cat_counts = df["CRIME CATEGORY"].value_counts().reset_index()
+        fig_bar = px.bar(
+            cat_counts, x="count", y="CRIME CATEGORY", orientation='h',
+            color="CRIME CATEGORY", color_discrete_map=CRIME_COLORS
         )
-    )
+        fig_bar.update_layout(
+            plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)',
+            showlegend=False, height=300, margin=dict(l=0, r=0, t=0, b=0)
+        )
+        st.plotly_chart(fig_bar, use_container_width=True)
 
-    chart(fig_trend, h=550)
-
-    fig_trend.update_layout(
-        title="Crime Incidents Over Time",
-        showlegend=False,
-        hovermode="x unified",
-        margin=dict(l=20, r=20, t=50, b=20)
-    )
-
-    fig_trend.update_xaxes(
-        title="Date"
-    )
-
-    fig_trend.update_yaxes(
-        title="Number of Incidents"
-    )
-
-    st.plotly_chart(
-        fig_trend,
-        use_container_width=True
-    )
+    with col2:
+        st.markdown("<div class='priority-title'>VICTIM AGE DISTRIBUTION</div>", unsafe_allow_html=True)
+        age_counts = df["Age Group"].value_counts().sort_index().reset_index()
+        fig_age = px.pie(age_counts, values="count", names="Age Group", hole=0.6)
+        fig_age.update_traces(textinfo='percent+label', marker=dict(line=dict(color='#070b12', width=2)))
+        fig_age.update_layout(
+            paper_bgcolor='rgba(0,0,0,0)', showlegend=False, 
+            height=300, margin=dict(l=0, r=0, t=0, b=0)
+        )
+        st.plotly_chart(fig_age, use_container_width=True)
